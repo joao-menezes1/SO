@@ -1,8 +1,7 @@
 import socket
-from pathlib import Path
 
-HOST = '10.0.4.72'
-PORT = 5003
+HOST = '127.0.0.1'
+PORT = 8080
 
 servidor = (HOST, PORT)
 
@@ -17,32 +16,28 @@ def menu():
     print("3 - Excluir diretório")
     print("4 - Mostrar arquivo")
 
-def trata_opcoes(opcao_digitada):
-
-    valores = opcao_digitada.split()
-    opcao = valores[0]
-    caminho = valores[1]
-
+def trata_opcoes(opcao_digitada, caminho):
 
     msg = ''
-    if opcao == "1":
+    if opcao_digitada == "1":
         msg = 'LERDIR:' + caminho
 
-    elif opcao == "2":
+    elif opcao_digitada == "2":
         msg = 'CRIARDIR:' + caminho
 
-    elif opcao == "3":
+    elif opcao_digitada == "3":
         msg = 'EXCLUIRDIR:' + caminho
 
-    elif opcao == "4":
+    elif opcao_digitada == "4":
         msg = 'MOSTRAR:' + caminho
 
     return msg
 
 while True:
     menu()
-    opcao = input('')
-    msg = trata_opcoes(opcao)
+    opcao = input('Escolha uma opção: ')
+    caminho = input('Digite o caminho: ')
+    msg = trata_opcoes(opcao, caminho)
     udp.sendto(msg.encode(encoding="utf-8"), servidor)
     resposta_servidor, s = udp.recvfrom(1024)
     print(resposta_servidor.decode(encoding='utf-8', errors='backslashreplace'))
